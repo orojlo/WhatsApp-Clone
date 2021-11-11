@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import Login from './components/Login';
+import Sidebar from './components/Sidebar';
 import useWindowSize from "./hooks/useWindowSize";
 import useAuthUser from "./hooks/useAuthUser";
 
@@ -14,7 +15,9 @@ export default function App() {
 
   return (
     <div className="app" style={{ ...page }}>
-      App
+      <div className="app_body">
+        <Sidebar user={user} page={page} />
+      </div>
     </div>
   );
 }
