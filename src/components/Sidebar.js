@@ -5,8 +5,11 @@ import SidebarList from './SidebarList';
 import { auth, createTimestamp, db } from '../firebase';
 import "./Sidebar.css";
 import { NavLink, Switch, Route } from 'react-router-dom';
+import useRooms from "../hooks/useRooms";
 
 export default function Sidebar({ user, page }) {
+
+  const rooms = useRooms()
   const [menu, setmenu] = React.useState(1)
 
 
