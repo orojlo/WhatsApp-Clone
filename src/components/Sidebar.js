@@ -75,7 +75,7 @@ if (page.isMobile) {
     <div className="sidebar__menu">
     <Nav
         to="/chats"
-        activeClass="sidebar__menu--selected"
+        activeClassName="sidebar__menu--selected"
         onClick={() => setMenu(1)}
         activeClass={menu === 1}
       >
@@ -88,7 +88,7 @@ if (page.isMobile) {
       </Nav>
       <Nav
         to="/rooms"
-        activeClass="sidebar__menu--selected"
+        activeClassName="sidebar__menu--selected"
         onClick={() => setMenu(2)}
         activeClass={menu === 2}
       >
@@ -101,7 +101,7 @@ if (page.isMobile) {
       </Nav>
       <Nav
         to="/users"
-        activeClass="sidebar__menu--selected"
+        activeClassName="sidebar__menu--selected"
         onClick={() => setMenu(3)}
         activeClass={menu === 3}
       >
@@ -124,7 +124,7 @@ if (page.isMobile) {
         <SidebarList title="Rooms" data={[rooms]} />
       </Route>
       <Route path="/users">
-        <SidebarList title="Users" data={[]} />
+        <SidebarList title="Users" data={[users]} />
       </Route>
       <Route path="/search">
         <SidebarList title="Search Results" data={[]} />
@@ -137,7 +137,7 @@ if (page.isMobile) {
     <SidebarList title="Rooms" data={[rooms]} />
   )
   : menu === 3 ? (
-    <SidebarList title="Users" data={[]} />
+    <SidebarList title="Users" data={[users]} />
   )
   : menu === 4 ? (
     <SidebarList title="Search Result" data={[]} />
