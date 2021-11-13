@@ -6,11 +6,14 @@ import { auth, createTimestamp, db } from '../firebase';
 import "./Sidebar.css";
 import { NavLink, Switch, Route } from 'react-router-dom';
 import useRooms from "../hooks/useRooms";
+import useUsers from "../hooks/useUsers";
 
 export default function Sidebar({ user, page }) {
+  const rooms = useRooms();
+  const users = useUsers(user);
 
-  const rooms = useRooms()
-  const [menu, setmenu] = React.useState(1)
+
+  const [menu, setMenu] = React.useState(1);
 
 
   function signOut() {
@@ -69,11 +72,11 @@ if (page.isMobile) {
       </form>
     </div>
 
-    <div class="sidebar__menu">
+    <div className="sidebar__menu">
     <Nav
         to="/chats"
         activeClass="sidebar__menu--selected"
-        onClick={() => setmenu(1)}
+        onClick={() => setMenu(1)}
         activeClass={menu === 1}
       >
         <div className="sidebar__menu--home">
@@ -84,12 +87,12 @@ if (page.isMobile) {
         </div>
       </Nav>
       <Nav
-        to="/chats"
+        to="/rooms"
         activeClass="sidebar__menu--selected"
-        onClick={() => setmenu(2)}
+        onClick={() => setMenu(2)}
         activeClass={menu === 2}
       >
-        <div className="sidebar__menu--home">
+        <div className="sidebar__menu--rooms">
           <Message />
           <div className="sidebar__menu--line" />
 
@@ -99,7 +102,7 @@ if (page.isMobile) {
       <Nav
         to="/users"
         activeClass="sidebar__menu--selected"
-        onClick={() => setmenu(3)}
+        onClick={() => setMenu(3)}
         activeClass={menu === 3}
       >
         <div className="sidebar__menu--users">
@@ -115,29 +118,29 @@ if (page.isMobile) {
     {page.isMobile ? (
     <Switch>
       <Route path="/chats">
-        <SidebarList />
+        <SidebarList title="Chats" data={[]} />
       </Route>
       <Route path="/rooms">
-        <SidebarList />
+        <SidebarList title="Rooms" data={[rooms]} />
       </Route>
       <Route path="/users">
-        <SidebarList />
+        <SidebarList title="Users" data={[]} />
       </Route>
       <Route path="/search">
-        <SidebarList />
+        <SidebarList title="Search Results" data={[]} />
       </Route>
     </Switch>
   ) : menu === 1 ? (
-    <SidebarList />
+    <SidebarList title="Chats" data={[]} />
   )
   : menu === 2 ? (
-    <SidebarList />
+    <SidebarList title="Rooms" data={[rooms]} />
   )
   : menu === 3 ? (
-    <SidebarList />
+    <SidebarList title="Users" data={[]} />
   )
   : menu === 4 ? (
-    <SidebarList />
+    <SidebarList title="Search Result" data={[]} />
   ) : null}
 
     <div className="sidebar__chat--addRoom">
