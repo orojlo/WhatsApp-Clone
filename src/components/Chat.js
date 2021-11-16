@@ -5,16 +5,89 @@ import useRoom from '../hooks/useRoom';
 import ChatMessages from './ChatMessages';
 import ChatFooter from './ChatFooter';
 import MediaPreview from './MediaPreview';
+import Compressor from "compressorjs";
 import { Avatar, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { AddPhotoAlternate, ArrowBack, MoreVert } from "@material-ui/icons";
+import { v4 as uuid } from 'uuid';
+import { createTimestamp, db, storage } from "../firebase";
 
 export default function Chat([user, page]) {
   const [image, setImage] = React.useState(null)
+  const [input, setInput] = React.useState('')
   const [src, setSrc] = React.useState("")
   
   const { roomId } = useParams()
   const history = useHistory()
   const room = useRoom(roomId, user.uid)
+
+
+  function onChange(event) {
+    setInput(event.target.value);
+  }
+
+  async function sendMessage(event) {
+    event.preventDefault();
+
+    if (input.trim() || (input === "" && image)) {
+      setInput("");
+      if (image) {
+        closePreview()
+      }
+      const imageName = uuid();
+      const newMessage = image ? {
+        name : user.displayName,
+        message: input,
+        uid: user.uid,
+        timestamp: createTimestamp(),
+        time : new Date().toUTCString(),
+        imageUrl: "uploading",
+        imageName
+      } : {
+        name: user.displayName,
+        message: input,
+        uid: user.uid,
+        timestamp: createTimestamp(),
+        time : new Date().toUTCString(),
+      }
+
+      db.collection('users')
+      .doc(user.uid)
+      .collection('chat')
+      .doc(roomId)
+      .set({
+        name : room.name,
+        photoURL: room.photoURL || null,
+        timestamp: createTimestamp()
+      })
+
+
+      const doc = await db.collection("rooms").doc(roomId).collection
+      ('messages').add(newMessage);
+
+
+      if (image) {
+        new Compressor(image, {
+          quality: 0.8,
+          maxWidth: 1920,
+          async success(result) {
+            setSrc("")
+            setImage(null)
+            await storage.child(imageName).put(result);
+            const url = await storage.child(imageName).
+            getDownloadURL();
+            db.collection('rooms')
+            .doc(roomId)
+            .collection('messages')
+            .doc(doc.id)
+            .update({
+              imageUrl: url
+            })
+
+          }
+        })
+      }
+    }
+  }
 
 
   function showPreview(event) {
@@ -94,6 +167,14 @@ export default function Chat([user, page]) {
     <MediaPreview src={src} closePreview={closePreview} />
 
 
-    <ChatFooter />
+    <ChatFooter
+      input={input}
+      onChange={onChange}
+      sendMessage={sendMessage}
+      image={image}
+      user={user}
+      room={room}
+      roomId={roomId}
+    />
   </div>;
 }

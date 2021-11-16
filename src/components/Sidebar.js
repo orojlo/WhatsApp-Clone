@@ -18,6 +18,7 @@ import useChats from "../hooks/useChats";
 
 export default function Sidebar({ user, page }) {
   const rooms = useRooms();
+   // console.log({ rooms });
   const users = useUsers(user);
   const chats = useChats(user);
 

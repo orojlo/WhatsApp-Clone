@@ -2,7 +2,15 @@ import { CancelRounded, CheckCircleRounded, MicRounded, Send } from "@material-u
 import React from "react";
 import "./ChatFooter.css";
 
-export default function ChatFooter() {
+export default function ChatFooter({
+  input,
+  onChange,
+  sendMessage,
+  image,
+  user,
+  room,
+  roomId,
+}) {
   const [isRecording, setRecording] = React.useState(false)
 
   const btnIcon = (
@@ -29,12 +37,20 @@ export default function ChatFooter() {
   return <div className="chat__footer">
     <form>
       <input
-        placeholder="Type A Message"
-      />
+      value={input}
+      onChange={!isRecording ? onchange : null}
+      placeholder="Type a message" />
 
 
       {canRecord ? (
-        <button type="submit" className="send__btn">
+        <button
+          onClick={
+            input.trim() || (input === "" && image)
+            ? sendMessage
+            : () => false
+          }
+        
+        type="submit" className="send__btn">
           {btnIcon}
         </button>
       ) : (
