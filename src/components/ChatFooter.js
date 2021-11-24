@@ -60,6 +60,18 @@ export default function ChatFooter({
     return String(value).length < 2 ? `0${value}` : value;
   }
 
+  function stopRecording() {
+    inputRef.current.focus();
+    clearInterval(timerInterval.current);
+    const audio = record.current.stop();
+    recordingEl.current.style.opacity = "0";
+    setRecording(false);
+    inputRef.current.style.width = "calc(100% - 112px)";
+    setDuration("00:00");
+    return audio;
+
+  }
+
 
 
   const btnIcon = (
@@ -130,6 +142,7 @@ export default function ChatFooter({
             height: 30,
             color: '#f20519'
           }}
+          onClick={stopRecording}
         />
         <div>
           <div className="record__redcircle" />
