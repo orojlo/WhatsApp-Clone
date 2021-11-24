@@ -16,6 +16,7 @@ export default function Chat([user, page]) {
   const [image, setImage] = React.useState(null);
   const [input, setInput] = React.useState("");
   const [src, setSrc] = React.useState("");
+  const [audioId, setAudioId] = React.useState("");
   
   const { roomId } = useParams();
   const history = useHistory();
@@ -181,6 +182,7 @@ export default function Chat([user, page]) {
       user={user}
       room={room}
       roomId={roomId}
+      setAudioId={setAudioId}
     />
   </div>;
 }

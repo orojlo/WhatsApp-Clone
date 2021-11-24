@@ -6,6 +6,9 @@ export default function ChatMessages({
   user,
   roomId
 }) {
+
+  if (!messages) return null;
+  
   return messages.map(message => {
     const isSender = message.uid === user.uid;
 
