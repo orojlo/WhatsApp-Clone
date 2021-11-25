@@ -54,18 +54,21 @@ export default function Chat([user, page]) {
       }
 
       db.collection('users')
-      .doc(user.uid)
-      .collection('chat')
-      .doc(roomId)
-      .set({
-        name : room.name,
-        photoURL: room.photoURL || null,
-        timestamp: createTimestamp()
-      })
+        .doc(user.uid)
+        .collection('chat')
+        .doc(roomId)
+        .set({
+          name : room.name,
+          photoURL: room.photoURL || null,
+          timestamp: createTimestamp()
+        });
 
 
-      const doc = await db.collection("rooms").doc(roomId).collection
-      ('messages').add(newMessage);
+      const doc = await db
+        .collection("rooms")
+        .doc(roomId)
+        .collection("messages")
+        .add(newMessage);
 
 
       if (image) {
@@ -73,8 +76,8 @@ export default function Chat([user, page]) {
           quality: 0.8,
           maxWidth: 1920,
           async success(result) {
-            setSrc("")
-            setImage(null)
+            setSrc("");
+            setImage(null);
             await storage.child(imageName).put(result);
             const url = await storage.child(imageName).
             getDownloadURL();
