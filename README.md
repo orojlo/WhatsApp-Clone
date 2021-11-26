@@ -1,6 +1,5 @@
 # WhatsApp-Clone
-
-# A Simple Chat Messenger Like WhatsApp
+A Simple Chat Messenger Like WhatsApp
 
 # Tools :
 
