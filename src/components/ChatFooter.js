@@ -156,7 +156,7 @@ export default function ChatFooter({
           placeholder="Type a message"
         />
 
-        {!canRecord ? (
+        {canRecord ? (
           <button
             onClick={
               input.trim() || (input === "" && image)
